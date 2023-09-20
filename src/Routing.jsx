@@ -3,7 +3,7 @@
 //import Home from "./common/Home";
 //import CookieAuthProvider from "../contexts/cookieAuth";
 import React from "react";
-import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import About from "./common/About.jsx";
 import App from "./components/App";
 import Layout from "./common/Layout";
@@ -14,7 +14,7 @@ import SignupPage from "./components/users/SignupPage";
 function Routing() {
   return (
     <>
-      <BrowserRouter>
+      <Router>
         <Layout>
           <Routes>
             <Route path="/" element={<App />} />
@@ -23,7 +23,7 @@ function Routing() {
             <Route path="/signup" element={<SignupPage />} />
           </Routes>
         </Layout>
-      </BrowserRouter>
+      </Router>
     </>
   );
 }
