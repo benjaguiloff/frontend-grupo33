@@ -1,6 +1,9 @@
 import React from "react";
 import "./App.css";
 import axios from "axios";
+import LoginButton from "./users/LoginButton";
+import LogoutButton from "./users/LogoutButton";
+import Profile from "./users/Profile";
 
 /*
 App
@@ -17,6 +20,9 @@ function App() {
   
   return (
     <div className="container">
+      <Profile />
+      <LoginButton />
+      <LogoutButton />
       <div id="root-content">
         <h1>¡Stocks!</h1>
         <button>Play</button>
