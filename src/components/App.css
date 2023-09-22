@@ -50,7 +50,8 @@ body {
   margin-left: 0%;
   margin-right: 0%;
   padding-bottom: 3%;
-  text-align: justify;
+  text-align: center;
+  
 }
 
 .instructions {
@@ -111,7 +112,7 @@ h6 {
 }
 
 /* Botones */
-button {
+/* button {
   background-color: var(--primary-color);
   color: white;
   border: none;
@@ -119,11 +120,11 @@ button {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   cursor: pointer;
-}
+} */
 
-button:hover {
+/* button:hover {
   background-color: var(--accent-color);
-}
+} */
 
 /* Formularios */
 label {
@@ -136,12 +137,9 @@ label {
 .profile {
   width: 30%;
   font-family: "Public Pixel", sans-serif;
-  border-color: var(--background-color);
-  color: var(--background-color);
-  flood-color: #2ccefb;
-  outline-color: #2ccefb;
-  background-color: #8cda80;
   border-radius: 5px;
+  align-items: center;
+  background-color: var(--background-color) !important;
 }
 
 .profile .card {
@@ -171,7 +169,7 @@ label {
 }
 
 .profile .title {
-  color: var(--secondary-color);
+  color: var(--text-color);
   font-size: 80%;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -183,7 +181,7 @@ label {
   word-break: break-word;
 }
 
-.profile .card button {
+button, .profile .card button {
   border: none;
   outline: none;
   padding: 10px;
@@ -192,11 +190,12 @@ label {
   text-align: center;
   cursor: pointer;
   width: 100%;
+  font-family: "Public Pixel", sans-serif;
   font-size: 16px;
-  border-radius: 0 0 5px 5px;
+  border-radius: 5px 5px 5px 5px;
 }
 
-.profile .card button:hover {
+button:hover, .profile .card button:hover {
   background-color: var(--accent-color);
   color: var(--background-color);
 }

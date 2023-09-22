@@ -1,5 +1,4 @@
 import { useAuth0 } from "@auth0/auth0-react";
-// import "./LoginPage.css";
 
 const LogoutButton = () => {
     const { logout, isAuthenticated } = useAuth0();
@@ -7,7 +6,7 @@ const LogoutButton = () => {
     return (
         isAuthenticated && (
             <button className="login-button" onClick={() => logout()}>
-                Log Out
+                LOG OUT
             </button>
         )
     );
