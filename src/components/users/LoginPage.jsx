@@ -29,7 +29,7 @@ function LoginPage() {
   };
 
   const verificarInicioSesion = async () => {
-    const url = "http://localhost:4000/users/credentials"; // URL del endpoint en el backend
+    const url = "http://localhost:3000/users/credentials"; // URL del endpoint en el backend
 
     const credenciales = {
       emailTest: email,
