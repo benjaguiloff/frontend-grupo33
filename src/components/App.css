@@ -44,13 +44,14 @@ body {
   color: var(--text-color);
   background-color: var(--background-color);
   margin-top: 1%;
-  padding-top: 10%;
+  padding-top: 5%;
   padding-left: 10%;
   padding-right: 10%;
   margin-left: 0%;
   margin-right: 0%;
   padding-bottom: 3%;
-  text-align: justify;
+  text-align: center;
+  
 }
 
 .instructions {
@@ -111,7 +112,7 @@ h6 {
 }
 
 /* Botones */
-button {
+/* button {
   background-color: var(--primary-color);
   color: white;
   border: none;
@@ -119,11 +120,11 @@ button {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   cursor: pointer;
-}
+} */
 
-button:hover {
+/* button:hover {
   background-color: var(--accent-color);
-}
+} */
 
 /* Formularios */
 label {
@@ -132,52 +133,70 @@ label {
   color: var(--secondary-color);
 }
 
-/* Estilos para pantallas con un ancho máximo de 768px */
-@media screen and (max-width: 768px) {
-  .container,
-  .instructions {
-    padding: 10%;
-  }
-
-  .text {
-    padding: 10%;
-    font-size: 16px;
-  }
+/* Estilos para el componente Profile */
+.profile {
+  width: 30%;
+  font-family: "Public Pixel", sans-serif;
+  border-radius: 5px;
+  align-items: center;
+  background-color: var(--background-color) !important;
 }
 
-/* Estilos para pantallas con un ancho máximo de 576px */
-@media screen and (max-width: 576px) {
-  .container,
-  .instructions {
-    padding: 5%;
-  }
-
-  .text {
-    padding: 5%;
-    font-size: 14px;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-  }
-
-  h2 {
-    font-size: 2rem;
-  }
-
-  h3 {
-    font-size: 1.5rem;
-  }
-
-  h4 {
-    font-size: 1.25rem;
-  }
-
-  h5 {
-    font-size: 1rem;
-  }
-
-  h6 {
-    font-size: 0.75rem;
-  }
+.profile .card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  background-color: var(--background-color);
+  border-radius: 5px;
+  color: var(--text-color);
+  text-align: center;
+  cursor: default;
 }
+
+.profile .card img {
+  border-radius: 5px 5px 0 0;
+  width: 100%;
+}
+
+.profile .card h1, .profile .card p {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.profile .card .username {
+  font-size: 90%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.profile .title {
+  color: var(--text-color);
+  font-size: 80%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.profile .contact {
+  font-size: 50%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+button, .profile .card button {
+  border: none;
+  outline: none;
+  padding: 10px;
+  color: var(--text-color);
+  background-color: var(--primary-color);
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-family: "Public Pixel", sans-serif;
+  font-size: 16px;
+  border-radius: 5px 5px 5px 5px;
+}
+
+button:hover, .profile .card button:hover {
+  background-color: var(--accent-color);
+  color: var(--background-color);
+}
+
