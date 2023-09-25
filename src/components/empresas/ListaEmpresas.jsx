@@ -1,6 +1,11 @@
 import React, { useState } from "react";
-import axios from "axios";
 import "./ListaEmpresas.css";
+import axios from "axios";
+import { useSearchParams } from 'react-router-dom';
+
+
+
+axios.defaults.withCredentials = true;
 /*
 Ruta de Lista de Empresas:
 
@@ -10,24 +15,37 @@ Descripción: Página que muestra una lista
 de empresas disponibles para comprar acciones.
 */
 function CompanyList() {
-   return (
-        <div className="CompanyList">
-            <h1>Listado de Empresas</h1>
-            <List companies={companies} />
-        </div>
-   )
+    const [companiesArray, setCompaniesArray] = useState([]);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const page = searchParams.get('page');
+    const GetCompanies = async () => {
+        const url = "http://localhost:4000/stocks?page="+page; // URL del endpoint en el backend
+        try {
+            const respuesta = await axios
+            .get(url)
+            .catch((error) => {
+                console.log("Error al obtener las existencias:", error);
+            })
+            let companiesArray = respuesta.data;
+            for (const language of companiesArray) {
+                console.log(language);
+              }
+              setCompaniesArray(companiesArray);
+        }
+        
+        catch (error) {
+            console.log(error.message);
+        }};
+    GetCompanies();
+    return (
+            <div className="CompanyList">
+                <h1>Listado de Empresas</h1>
+                <List companies={companiesArray} />
+            </div>
+    )
 }
 
-const companies = [
-    { id: 1, name: 'Company A', stockPrice: 100 },
-    { id: 2, name: 'Company B', stockPrice: 150 },
-    { id: 3, name: 'Company C', stockPrice: 80 },
-  ];
-
 function List({ companies }) {
-    axios.get("https://localhost:4000/stocks")
-    .then((response) => {
-        console.log("TEST");})
     return (
         <div>
         <ul>
@@ -50,8 +68,8 @@ const handleBuy = () => {
 
 return (
     <div>
-    <h3>{company.name}</h3>
-    <p>Stock Price: ${company.stockPrice} <button onClick={handleBuy}>Buy</button> </p>
+    <h3>{company.shortName} : {company.symbol}</h3>
+    <h5>Stock Price: {company.price}</h5><p><button onClick={handleBuy}>Buy</button> </p>
     </div>
 );
 }

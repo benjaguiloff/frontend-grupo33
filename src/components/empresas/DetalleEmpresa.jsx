@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import "./ListaEmpresas.css";
+import axios from "axios";
+import { useSearchParams,  useParams } from 'react-router-dom';
 /*
 Detalle de Empresa:
 
@@ -9,38 +12,53 @@ y permite a los usuarios comprar acciones de esa empresa.
 */
 
 const DetalleEmpresa = ({ stockData, itemsPerPage }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  axios.get("https://localhost:4000/stocks/:id")
-    .then((response) => {
-        console.log("TEST");})
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentStocks = stockData.slice(startIndex, endIndex);
-
-  const totalPages = Math.ceil(stockData.length / itemsPerPage);
-
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
+  const [companieArray, setCompanieArray] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  let { id } = useParams();
+  console.log(id);
+  const page = searchParams.get('page');
+  const size = searchParams.get('size');
+  const GetStocks = async () => {
+    const url = "http://localhost:4000/stocks/"+"AAPL"+"/?page="+page+"?size="+size; // URL del endpoint en el backend
+    try {
+        const respuesta = await axios
+        .get(url)
+        .catch((error) => {
+            console.log("Error al obtener las existencias:", error);
+        })
+        let companiesArray = respuesta.data;
+        for (const language of companiesArray) {
+            console.log(language);
+          }
+          setCompanieArray(companieArray);
+          console.log(companieArray);
+    }
+    
+    catch (error) {
+        console.log(error.message);
+    }};
+  GetStocks();
+  // const handlePageChange = (newPage) => {
+  //   setCurrentPage(newPage);
+  // };
 
   return (
     <div>
       <ul>
-        {currentStocks.map((stock, index) => (
+        {companieArray.map((stock, index) => (
           <li key={index}>{stock.name}: {stock.price}</li>
         ))}
       </ul>
       <div>
         <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
+          // onClick={() => handlePageChange(currentPage - 1)}
+          // disabled={currentPage === 1}
         >
           Previous Page
         </button>
         <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
+          // onClick={() => handlePageChange(currentPage + 1)}
+          // disabled={currentPage === totalPages}
         >
           Next Page
         </button>

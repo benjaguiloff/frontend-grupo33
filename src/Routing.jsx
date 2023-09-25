@@ -10,6 +10,7 @@ import Layout from "./common/Layout";
 import LoginPage from "./components/users/LoginPage";
 import SignupPage from "./components/users/SignupPage";
 import CompanyList from "./components/empresas/ListaEmpresas.jsx";
+import DetalleEmpresa from "./components/empresas/DetalleEmpresa.jsx";
 
 // Configurar el enrutamiento de la aplicación
 function Routing() {
@@ -22,7 +23,8 @@ function Routing() {
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/list" element={<CompanyList />} />
+            <Route path="/stocks" element={<CompanyList />} />
+            <Route path="/stocks/:id" element={<CompanyList />} />
           </Routes>
         </Layout>
       </Router>
