@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const ADD_MONEY_URL = `http://localhost:8889/wallets`;
+const ADD_MONEY_URL = `${process.env.REACT_APP_BACKEND_URL}/wallets`;
 
 const AddMoneyButton = ({ updateWallet }) => {
   const { user, getAccessTokenSilently } = useAuth0();

@@ -8,9 +8,7 @@ axios.defaults.withCredentials = true;
 let accessToken = '';
 
 // GET BACKEND_URL
-let backendURL = process.env.BACKEND_URL;
-
-backendURL = 'http://localhost:8889';
+const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 const loginURL = `${backendURL}/users/login`;
 

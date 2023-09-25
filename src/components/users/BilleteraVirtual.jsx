@@ -7,9 +7,7 @@ import AddMoneyButton from './AddMoneyButton';
 
 
 // GET BACKEND_URL
-let backendURL = process.env.BACKEND_URL;
-
-backendURL = 'http://localhost:8889';
+const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 
 const Wallet = () => {
@@ -22,7 +20,7 @@ const Wallet = () => {
         try {
           let walletURL = `${backendURL}/wallets/${user.sub}`;
           const response = await axios.get(walletURL);
-          console.log('Response:', response);
+          console.log(`${backendURL}/wallets/${user.sub}`);
           setWalletAmount(response.data.money); // Establece el monto de la billetera con el valor recibido
         } catch (error) {
           console.error('Error al obtener los datos de la billetera:', error);

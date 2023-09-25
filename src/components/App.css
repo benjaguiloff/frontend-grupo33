@@ -175,6 +175,14 @@ label {
   word-break: break-word;
 }
 
+.profile .saldo {
+  margin: 0%;
+  color: var(--text-color);
+  font-size: 80%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
 .profile .contact {
   font-size: 50%;
   overflow-wrap: break-word;
@@ -199,4 +207,3 @@ button:hover, .profile .card button:hover {
   background-color: var(--accent-color);
   color: var(--background-color);
 }
-

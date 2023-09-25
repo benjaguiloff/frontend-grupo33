@@ -7,7 +7,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-let backendURL = 'http://localhost:8889';
+const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 const BuyedStocks = () => {
   const [stocks, setStocks] = useState([]);
@@ -15,7 +15,7 @@ const BuyedStocks = () => {
   const { user, isAuthenticated, isLoading } = useAuth0(); // Agregamos isLoading
   const userId = user?.sub; // Usamos user?.sub para obtener el ID de usuario
 
-  let purchaseURL = `${backendURL}/purchase/${userId}`;
+  let purchaseURL = `${backendURL}/purchases/${userId}`;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,6 +23,7 @@ const BuyedStocks = () => {
         if (isAuthenticated) {
           const response = await axios.get(purchaseURL);
           console.log('Respuesta backend', response.status);
+          console.log('Respuesta backend', response.data);
           setStocks(response.data);
           setLoading(false);
         }
@@ -35,24 +36,34 @@ const BuyedStocks = () => {
     fetchData(); // Llama a la función asincrónica
   }, [isAuthenticated, userId, purchaseURL]);
 
+  const containerStyle = {
+    margin: '20px',
+    padding: '20px',
+    border: '1px solid #ccc',
+  };
+
+  const listStyle = {
+    listStyleType: 'none',
+    padding: 0,
+  };
+
   if (isLoading) {
     return <p>Cargando...</p>; // Muestra un mensaje de carga mientras Auth0 verifica la autenticación
   }
 
   return (
-    <div>
+    <div style={containerStyle}>
       {isAuthenticated ? (
         loading ? (
           <p>Cargando existencias...</p>
         ) : (
           <div>
-            <h4> UserId: {userId} </h4>
             <h2>Acciones Compradas</h2>
-            <ul>
-              {Array.isArray(stocks) ? (
+            <ul style={listStyle}>
+              {Array.isArray(stocks) && stocks.length > 0 ? (
                 stocks.map((stock) => <li key={stock.id}>{stock.nombre}</li>)
               ) : (
-                <p>No se encontraron acciones compradas.</p>
+                <p>No tienes acciones compradas en este momento.</p>
               )}
             </ul>
           </div>
