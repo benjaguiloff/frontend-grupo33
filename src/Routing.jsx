@@ -8,6 +8,7 @@ import About from './common/About.jsx';
 import App from './components/App';
 import Layout from './common/Layout';
 import BuyedStocks from './components/user-empresa/BuyedStocks.jsx';
+import Wallet from './components/users/BilleteraVirtual.jsx';
 
 // Configurar el enrutamiento de la aplicación
 function Routing() {
@@ -18,8 +19,8 @@ function Routing() {
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/about" element={<About />} />
-  
             <Route path="/companies" element={<BuyedStocks />} />
+            <Route path="/wallet" element={<Wallet />} />
           </Routes>
         </Layout>
       </Router>

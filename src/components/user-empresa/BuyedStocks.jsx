@@ -7,28 +7,33 @@ import { useAuth0 } from '@auth0/auth0-react';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+let backendURL = 'http://localhost:8889';
+
 const BuyedStocks = () => {
   const [stocks, setStocks] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user, isAuthenticated, isLoading } = useAuth0(); // Agregamos isLoading
   const userId = user?.sub; // Usamos user?.sub para obtener el ID de usuario
 
+  let purchaseURL = `${backendURL}/purchase/${userId}`;
+
   useEffect(() => {
-    if (isAuthenticated) {
-      // Verificamos si el usuario está autenticado antes de hacer la solicitud
-      console.log(user);
-      axios
-        .get(`/api/user/${userId}/stocks`)
-        .then((response) => {
+    const fetchData = async () => {
+      try {
+        if (isAuthenticated) {
+          const response = await axios.get(purchaseURL);
+          console.log('Respuesta backend', response.status);
           setStocks(response.data);
           setLoading(false);
-        })
-        .catch((error) => {
-          console.error('Error al obtener las existencias:', error);
-          setLoading(false);
-        });
-    }
-  }, [isAuthenticated, userId]); // Agregamos isAuthenticated y userId como dependencias
+        }
+      } catch (error) {
+        console.error('Error al obtener las existencias:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchData(); // Llama a la función asincrónica
+  }, [isAuthenticated, userId, purchaseURL]);
 
   if (isLoading) {
     return <p>Cargando...</p>; // Muestra un mensaje de carga mientras Auth0 verifica la autenticación
@@ -44,9 +49,11 @@ const BuyedStocks = () => {
             <h4> UserId: {userId} </h4>
             <h2>Acciones Compradas</h2>
             <ul>
-              {stocks.map((stock) => (
-                <li key={stock.id}>{stock.nombre}</li>
-              ))}
+              {Array.isArray(stocks) ? (
+                stocks.map((stock) => <li key={stock.id}>{stock.nombre}</li>)
+              ) : (
+                <p>No se encontraron acciones compradas.</p>
+              )}
             </ul>
           </div>
         )
