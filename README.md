@@ -1,6 +1,38 @@
 # frontend-grupo33
 Frontend E1 Grupo 33 Arquitectura de Sistemas de Software
 
+# Pasos para ejecutar de forma local
+
+1. En caso de ser necesario, instalar Node.js y NPM:
+   ```bash
+   sudo apt update
+   sudo apt install nodejs npm
+   ```
+   Para verificar que Node.js y NPM se han instalado correctamente, puedes usar los siguientes comandos:
+   ```bash
+   node -v // Para Node.js
+   npm -v // Para NPM
+   ```
+
+2. Instalar las dependencias:
+   ```
+   npm install
+   ```
+
+
+3. Crear el archivo con las variables de entorno `/.env`
+   ```
+   REACT_APP_AUTH0_DOMAIN= // Auth0 Domain
+   REACT_APP_AUTH0_CLIENT_ID= // Auth0 Client ID
+   REACT_APP_BACKEND_URL= // URL al backend
+   ```
+   
+4. En la raiz del proyecto, ejecutar
+   ```
+   npm start
+   ```
+
+---
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
