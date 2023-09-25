@@ -20,7 +20,7 @@ function Routing() {
             <Route path="/" element={<App />} />
             <Route path="/about" element={<About />} />
             <Route path="/companies" element={<BuyedStocks />} />
-            <Route path="/wallet" element={<Wallet />} />
+          
           </Routes>
         </Layout>
       </Router>
