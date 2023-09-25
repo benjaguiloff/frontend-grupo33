@@ -11,6 +11,8 @@ import LoginPage from "./components/users/LoginPage";
 import SignupPage from "./components/users/SignupPage";
 import CompanyList from "./components/empresas/ListaEmpresas.jsx";
 import DetalleEmpresa from "./components/empresas/DetalleEmpresa.jsx";
+import BuyedStocks from './components/user-empresa/BuyedStocks.jsx';
+import Wallet from './components/users/BilleteraVirtual.jsx';
 
 // Configurar el enrutamiento de la aplicación
 function Routing() {
@@ -25,6 +27,7 @@ function Routing() {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/stocks" element={<CompanyList />} />
             <Route path="/stocks/:id" element={<CompanyList />} />
+            <Route path="/companies" element={<BuyedStocks />} />
           </Routes>
         </Layout>
       </Router>

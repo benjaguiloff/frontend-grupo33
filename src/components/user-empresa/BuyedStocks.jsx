@@ -3,41 +3,62 @@ Se hace fetch a la API de las acciones compradas y solicitudes pendientes.
 
 GET api/user/:id/stocks. 
 */
-
+import { useAuth0 } from '@auth0/auth0-react';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const BuyedStocks = ({ userId }) => {
+let backendURL = 'http://localhost:8889';
+
+const BuyedStocks = () => {
   const [stocks, setStocks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user, isAuthenticated, isLoading } = useAuth0(); // Agregamos isLoading
+  const userId = user?.sub; // Usamos user?.sub para obtener el ID de usuario
+
+  let purchaseURL = `${backendURL}/purchase/${userId}`;
 
   useEffect(() => {
-    // Realiza la solicitud GET al servidor con el ID de usuario proporcionado.
-    axios.get(`/api/user/${userId}/stocks`)
-      .then(response => {
-        // Al recibir la respuesta, actualiza el estado de las existencias y marca la carga como completa.
-        setStocks(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
+    const fetchData = async () => {
+      try {
+        if (isAuthenticated) {
+          const response = await axios.get(purchaseURL);
+          console.log('Respuesta backend', response.status);
+          setStocks(response.data);
+          setLoading(false);
+        }
+      } catch (error) {
         console.error('Error al obtener las existencias:', error);
         setLoading(false);
-      });
-  }, [userId]);
+      }
+    };
+
+    fetchData(); // Llama a la función asincrónica
+  }, [isAuthenticated, userId, purchaseURL]);
+
+  if (isLoading) {
+    return <p>Cargando...</p>; // Muestra un mensaje de carga mientras Auth0 verifica la autenticación
+  }
 
   return (
     <div>
-      <h2>Existencias del usuario:</h2>
-      {loading ? (
-        <p>Cargando existencias...</p>
+      {isAuthenticated ? (
+        loading ? (
+          <p>Cargando existencias...</p>
+        ) : (
+          <div>
+            <h4> UserId: {userId} </h4>
+            <h2>Acciones Compradas</h2>
+            <ul>
+              {Array.isArray(stocks) ? (
+                stocks.map((stock) => <li key={stock.id}>{stock.nombre}</li>)
+              ) : (
+                <p>No se encontraron acciones compradas.</p>
+              )}
+            </ul>
+          </div>
+        )
       ) : (
-        <ul>
-          {stocks.map(stock => (
-            <li key={stock.id}>
-              Nombre: {stock.name}, Estado: {stock.status}
-            </li>
-          ))}
-        </ul>
+        <p>Por favor, inicia sesión para ver tus acciones compradas.</p>
       )}
     </div>
   );

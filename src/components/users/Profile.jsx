@@ -1,23 +1,40 @@
-import { useAuth0 } from "@auth0/auth0-react";
-// import "./LoginPage.css";
-import LogoutButton from "./LogoutButton";
+import { useAuth0 } from '@auth0/auth0-react';
+import LogoutButton from './LogoutButton';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
-    const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  // Verificar si el usuario está autenticado
+  if (isAuthenticated) {
+    // Obtener el token de acceso de forma silenciosa
+    getAccessTokenSilently().then((accessToken) => {
+      // Ahora puedes usar el token de acceso en tus solicitudes API
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    });
+  }
 
-    return (
-        isAuthenticated && (
-            <div className="profile">
-                <div className="card">
-                    {user?.picture && <img src={user.picture} alt={user?.name} style={{width: "100%"}} />}
-                    <h3 className="username">{user.name}</h3>
-                    <p className="title">@{user.nickname}</p>
-                    <p className="contact">{user.email}</p>
-                    <LogoutButton />
-                </div>
-            </div>
-        )
-    );
+  return (
+    isAuthenticated && (
+      <div className="profile">
+        <div className="card">
+          {user?.picture && (
+            <img
+              src={user.picture}
+              alt={user?.name}
+              style={{ width: '100%' }}
+            />
+          )}
+          <h3 className="username">{user.name}</h3>
+          <p className="title">@{user.nickname}</p>
+          <p className="contact">{user.email}</p>
+          <LogoutButton />
+          <Link to="/companies">Acciones Compradas</Link>
+          <Link to="/wallet">Billetera Virtual</Link>
+        </div>
+      </div>
+    )
+  );
 };
 
 export default Profile;
