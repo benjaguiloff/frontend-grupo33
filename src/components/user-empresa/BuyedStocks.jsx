@@ -12,8 +12,16 @@ const backendURL = process.env.REACT_APP_BACKEND_URL;
 const BuyedStocks = () => {
   const [stocks, setStocks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { user, isAuthenticated, isLoading } = useAuth0(); // Agregamos isLoading
+  const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0(); // Agregamos isLoading
   const userId = user?.sub; // Usamos user?.sub para obtener el ID de usuario
+
+  if (isAuthenticated) {
+    // Obtener el token de acceso de forma silenciosa
+    getAccessTokenSilently().then((accessToken) => {
+      // Ahora puedes usar el token de acceso en tus solicitudes API
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    });
+  }
 
   let purchaseURL = `${backendURL}/purchases/${userId}`;
 
@@ -22,8 +30,6 @@ const BuyedStocks = () => {
       try {
         if (isAuthenticated) {
           const response = await axios.get(purchaseURL);
-          console.log('Respuesta backend', response.status);
-          console.log('Respuesta backend', response.data);
           setStocks(response.data);
           setLoading(false);
         }

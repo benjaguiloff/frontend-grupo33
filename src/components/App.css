@@ -135,10 +135,12 @@ label {
 
 /* Estilos para el componente Profile */
 .profile {
-  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
   font-family: "Public Pixel", sans-serif;
   border-radius: 5px;
-  align-items: center;
   background-color: var(--background-color) !important;
 }
 
@@ -150,11 +152,13 @@ label {
   color: var(--text-color);
   text-align: center;
   cursor: default;
+  width: 70%;
 }
 
 .profile .card img {
   border-radius: 5px 5px 0 0;
-  width: 100%;
+  max-width: 100px;  /* Ancho máximo para la imagen */
+  margin: 0 auto;
 }
 
 .profile .card h1, .profile .card p {

@@ -29,8 +29,15 @@ const Profile = () => {
           <p className="title">@{user.nickname}</p>
           <p className="contact">{user.email}</p>
           <LogoutButton />
-          <Link to="/companies">Acciones Compradas</Link>
-          <Link to="/wallet">Billetera Virtual</Link>
+          <div>
+            <Link to="/stocks">Acciones Compradas</Link>
+          </div>
+          <div className='link'>
+            <Link to="/wallet">Billetera Virtual</Link>
+          </div>
+          <div className='link'>
+            <Link to="/companies">Empresas Disponibles</Link>
+          </div>
         </div>
       </div>
     )
