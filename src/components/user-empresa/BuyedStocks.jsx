@@ -65,13 +65,11 @@ const BuyedStocks = () => {
         ) : (
           <div>
             <h2>Acciones Compradas</h2>
-            <ul style={listStyle}>
               {Array.isArray(stocks) && stocks.length > 0 ? (
-                stocks.map((stock) => <li key={stock.id}>{stock.nombre}</li>)
+                stocks.map((stock) => <h4 key={stock.id}>{stock.amount} acciones de {stock.shortName} ({stock.symbol}) - Estado: {stock.status}</h4>)
               ) : (
                 <p>No tienes acciones compradas en este momento.</p>
               )}
-            </ul>
           </div>
         )
       ) : (

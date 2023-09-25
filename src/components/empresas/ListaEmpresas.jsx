@@ -10,18 +10,18 @@ de empresas disponibles para comprar acciones.
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate } from 'react-router-dom';  // Importa useNavigate
 
 const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 const CompaniesList = () => {
+  const navigate = useNavigate(); // Usa el hook
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
 
   if (isAuthenticated) {
-    // Obtener el token de acceso de forma silenciosa
     getAccessTokenSilently().then((accessToken) => {
-      // Ahora puedes usar el token de acceso en tus solicitudes API
       axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     });
   }
@@ -37,9 +37,12 @@ const CompaniesList = () => {
         setLoading(false);
       }
     };
-
     fetchCompanies();
   }, []);
+
+  const handleCompanyClick = (id) => { // Función para manejar el clic
+    navigate(`/empresa/${id}`);
+  };
 
   if (loading) {
     return <div>Cargando...</div>;
@@ -50,7 +53,12 @@ const CompaniesList = () => {
       <h1 style={{ textAlign: "center" }}>Empresas Disponibles</h1>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {companies.map((company, index) => (
-          <div key={index} style={{ width: "70%", textAlign: "center" }} className="card">
+          <div 
+            key={index}
+            style={{ width: "70%", textAlign: "center" }} 
+            className="card"
+            onClick={() => handleCompanyClick(company.symbol)}  // Añade el manejador del clic aquí
+          >
             {company.symbol}: {company.shortName}
           </div>
         ))}
