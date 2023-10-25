@@ -1,6 +1,9 @@
-import React from "react";
-import "./App.css";
-import axios from "axios";
+import React from 'react';
+import './App.css';
+import axios from 'axios';
+import LoginButton from './users/LoginButton';
+import Profile from './users/Profile';
+import BilleteraVirtual from './users/BilleteraVirtual';
 
 /*
 App
@@ -15,7 +18,9 @@ function App() {
     <div className="container">
       <div id="root-content">
         <h1>¡Stocks!</h1>
-        <button>Play</button>
+        <Profile />
+        <LoginButton />
+        <BilleteraVirtual />
       </div>
     </div>
   );
