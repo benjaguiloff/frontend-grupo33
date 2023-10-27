@@ -2,9 +2,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-axios.defaults.withCredentials = false;
-
-let accessToken = '';
 const backendURL = process.env.REACT_APP_BACKEND_URL;
 const loginURL = `${backendURL}/users/login`;
 
@@ -15,26 +12,30 @@ const LoginButton = () => {
 
   useEffect(() => {
     if (isAuthenticated && user && !userIdSent) {
-      // Verificar si el usuario está autenticado
-      if (isAuthenticated) {
-        // Obtener el token de acceso de forma silenciosa
-        getAccessTokenSilently().then((accessToken) => {
-          // Ahora puedes usar el token de acceso en tus solicitudes API
-        });
-      }
-      const userObj = { userId: user.sub };
-      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-      axios
-        .post(loginURL, userObj)
-        .then((response) => {
-          // console.log(response);
-          console.log('User sent to backend');
+      // Obtener el token de acceso de forma silenciosa
+      getAccessTokenSilently()
+        .then((token) => {
+          const userObj = { userId: user.sub };
+          axios
+            .post(loginURL, userObj, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((response) => {
+              console.log('User sent to backend');
+              console.log(response.data);
+            })
+            .catch((error) => {
+              console.error('Error al enviar user al backend', error);
+              console.log("El token de acceso es", token);
+            });
+
+          setUserIdSent(true);
         })
         .catch((error) => {
-          console.error('Error al enviar user al backend', error);
+          console.error('Error obteniendo el token', error);
         });
-
-      setUserIdSent(true);
     }
   }, [isAuthenticated, user, userIdSent, getAccessTokenSilently]);
 
