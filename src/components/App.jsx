@@ -5,12 +5,6 @@ import LoginButton from './users/LoginButton';
 import Profile from './users/Profile';
 import BilleteraVirtual from './users/BilleteraVirtual';
 
-/*
-App
-- Componente que contiene la página principal
-- Se utiliza en la página principal
-*/
-
 axios.defaults.withCredentials = true;
 
 function App() {

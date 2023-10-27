@@ -3,13 +3,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
-// axios.defaults.headers.common['Origin'] = '*';
 
 let accessToken = '';
-
-// GET BACKEND_URL
 const backendURL = process.env.REACT_APP_BACKEND_URL;
-
 const loginURL = `${backendURL}/users/login`;
 
 const LoginButton = () => {
