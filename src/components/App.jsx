@@ -5,7 +5,7 @@ import LoginButton from './users/LoginButton';
 import Profile from './users/Profile';
 import BilleteraVirtual from './users/BilleteraVirtual';
 
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = false;
 
 function App() {
   return (
