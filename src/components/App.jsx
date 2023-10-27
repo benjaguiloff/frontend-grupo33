@@ -11,7 +11,7 @@ App
 - Se utiliza en la página principal
 */
 
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = false;
 
 function App() {
   return (
