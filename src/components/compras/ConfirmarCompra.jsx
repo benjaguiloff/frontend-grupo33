@@ -13,18 +13,38 @@ function ConfirmPurchase() {
       cantidad: 10,
       precioTotal: 1000,
     };
-
     setCompra(infoCompra);
-
-    // Código para redirigir a WEBPAY
   };
+  const [showForm, setShowForm] = useState(false); // Nuevo estado para mostrar el formulario
+    const [formData, setFormData] = useState({
+      url: '',
+      token: '',
+    });
+    // Código para redirigir a WEBPAY
+    useEffect(() => {
+      const FetchWebPay = async () => {
+        try {
+          const response = await axios.get(`${backendURL}/purchases/webpay`);
+          setFormData(response.data);
+          setShowForm(true);
+        }
+        catch (error) {
+          console.log(error);
+        }
+      };
+      FetchWebPay();
+  }, []);
 
   return (
     <div>
-      {/* ...resto de tu componente */}
-      <button onClick={handleCompra}>Confirmar Compra</button>
+      {showForm ? (
+        <form method="post" action={formData.url} style={{ textAlign: 'center' }}>
+        <input type="hidden" name="token_ws" value={formData.token} />
+        <input type="submit" value="Confirmar Compra" />
+      </form>
+      ) : null}
     </div>
   );
-}
+};
 
 export default ConfirmPurchase;

@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 
-const CompraContext = createContext();
+const CompraContext = createContext(null);
 
 const CompraProvider = ({ children }) => {
   const [compra, setCompra] = useState(null);

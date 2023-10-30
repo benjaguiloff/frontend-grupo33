@@ -3,11 +3,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSearchParams, useParams } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate } from 'react-router-dom';  
+import { CompraContext } from '../compras/CompraContext';
 
 const backendURL = process.env.REACT_APP_BACKEND_URL;
 const purchaseURL = `${backendURL}/purchases`;
 
 const DetalleEmpresa = ({ itemsPerPage }) => {
+  const navigate = useNavigate(); // 
   const { user, getAccessTokenSilently } = useAuth0();
   const [companieArray, setCompanieArray] = useState([]);
   const [searchParams] = useSearchParams();
@@ -18,12 +21,15 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
   const [message, setMessage] = useState('');
   const [currentCompany, setCurrentCompany] = useState(null);
   const [quantity, setQuantity] = useState(1); // Nuevo estado para la cantidad
+
   const [showForm, setShowForm] = useState(false); // Nuevo estado para mostrar el formulario
   const [isIntervalRunning, setIsIntervalRunning] = useState(false);
   const [formData, setFormData] = useState({
     url: '',
     token: '',
   });
+
+  const { setCompra } = useContext(CompraContext);
 
 
   useEffect(() => {
@@ -33,7 +39,6 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
   }, [companieArray]);
 
   const handleClick = () => {
-    startInterval();
     buyStock();
   };
 
@@ -51,7 +56,8 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
         },
         { headers }
       );
-      setMessage('Solicitud de compra enviada.');
+      setCompra(response.data);
+      navigate('/compracompletada');
     } catch (error) {
       console.error('Error al intentar comprar:', error);
       if (error.request.response.message == "No se cuenta con el dinero suficiente para comprar esta acción") {
