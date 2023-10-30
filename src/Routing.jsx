@@ -9,7 +9,7 @@ import CompaniesList from './components/empresas/ListaEmpresas.jsx';
 import DetalleEmpresa from './components/empresas/DetalleEmpresa.jsx';
 import CompraCompletada from './components/compras/CompraCompletada.jsx';
 import ConfirmPurchase from './components/compras/ConfirmarCompra.jsx';
-import { CompraProvider } from './components/compras/CompraContext.jsx';
+import WebPayRedirect from './components/compras/CompraEnProceso.jsx';
 
 // Configurar el enrutamiento de la aplicación
 function Routing() {
@@ -24,10 +24,9 @@ function Routing() {
             <Route path="/wallet" element={<Wallet />} />
             <Route path="/companies" element={<CompaniesList />} />
             <Route path="/empresa/:id" element={<DetalleEmpresa />} />
-            <CompraProvider>
-              <Route path='/compracompletada' element={<CompraCompletada/>} />
-              <Route path="/confirmarcompra" element={<ConfirmPurchase/>} />
-            </CompraProvider>
+            <Route path="/confirmarcompra" element={<ConfirmPurchase/>} />
+            <Route path="/webpayredirect" element={<WebPayRedirect/>} />
+            <Route path='/compracompletada' element={<CompraCompletada/>} />
           </Routes>
         </Layout>
       </Router>

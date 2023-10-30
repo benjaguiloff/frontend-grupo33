@@ -1,13 +1,14 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { useSearchParams, useParams } from 'react-router-dom';
+import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useNavigate } from 'react-router-dom';  
 import { CompraContext } from '../compras/CompraContext';
 
 const backendURL = process.env.REACT_APP_BACKEND_URL;
 const purchaseURL = `${backendURL}/purchases`;
+const CancelToken = axios.CancelToken;
+let cancel;
 
 const DetalleEmpresa = ({ itemsPerPage }) => {
   const navigate = useNavigate(); // 
@@ -22,14 +23,8 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
   const [currentCompany, setCurrentCompany] = useState(null);
   const [quantity, setQuantity] = useState(1); // Nuevo estado para la cantidad
 
-  const [showForm, setShowForm] = useState(false); // Nuevo estado para mostrar el formulario
+  const [buyStocks, setBuyStocks] = useState(true);
   const [isIntervalRunning, setIsIntervalRunning] = useState(false);
-  const [formData, setFormData] = useState({
-    url: '',
-    token: '',
-  });
-
-  const { setCompra } = useContext(CompraContext);
 
 
   useEffect(() => {
@@ -41,9 +36,12 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
   const handleClick = () => {
     buyStock();
   };
-
   const buyStock = async () => {
+    if (!buyStocks) {
+      return
+    }
     try {
+      setBuyStocks(false);
       const accessToken = await getAccessTokenSilently();
       const headers = { Authorization: `Bearer ${accessToken}` };
       const response = await axios.post(
@@ -56,8 +54,13 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
         },
         { headers }
       );
-      setCompra(response.data);
-      navigate('/compracompletada');
+      const data = {
+        nombreStock: currentCompany ? currentCompany.shortName : '',
+        symbol: id,
+        cantidad: quantity, // Usando la cantidad seleccionada
+        precioTotal: currentCompany ? currentCompany.price * quantity : 0, // Usando el precio de currentCompany
+      };
+      navigate('/confirmarcompra?data=' + JSON.stringify(data));
     } catch (error) {
       console.error('Error al intentar comprar:', error);
       if (error.request.response.message == "No se cuenta con el dinero suficiente para comprar esta acción") {
@@ -69,40 +72,31 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
   };
 
   useEffect(() => {
+    if (companieArray.length ==  0) {
     const GetStocks = async () => {
       const url = `${backendURL}/stocks/${id}/?size=${500}`;
       try {
-        const respuesta = await axios.get(url);
+        if (cancel) {
+          cancel('Request canceled');
+        }
+        const respuesta = await axios.get(url, {
+          cancelToken: new CancelToken(function executor(c) {
+            // Set a reference to the cancel function
+            cancel = c;
+          }),});
         setCompanieArray(respuesta.data);
         console.log(respuesta.data);
       } catch (error) {
-        console.error('Error al obtener las existencias:', error);
+        // console.error('Error al obtener las existencias:', error);
       }
     };
     GetStocks();
+    };
   }, [id, page, size]);
 
   const startInterval = () => {
     setIsIntervalRunning(true);
   };
-
-  useEffect(() => {
-    if (isIntervalRunning) {
-    const FetchWebPay = async () => {
-      try {
-        const response = await axios.get(`${backendURL}/purchases/webpay`);
-        console.log(response.data);
-        setShowForm(true);
-        setFormData(response.data);
-      }
-      catch (error) {
-        console.log(error);
-      }
-    }; const interval = setInterval(FetchWebPay, 5000); // Poll every 5 seconds
-    
-    return () => clearInterval(interval);
-    }
-  }, []);
 
   const [currentPage, setCurrentPage] = useState(1); // Nueva variable de estado para la página actual
 
@@ -126,8 +120,15 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
     }
   };
 
+  const goBackToCOmpanies = () => {
+    navigate('/companies');
+  }
+
   return (
     <div>
+      <button onClick={goBackToCOmpanies}>
+        Volver
+      </button>
       <h1 style={{ textAlign: 'center' }}>Detalle Historico</h1>
       <h3 style={{ textAlign: 'center' }}>{id}</h3>
       <div style={{ textAlign: 'center', margin: '20px' }}>
@@ -160,12 +161,6 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
         COMPRAR 
       </button>
       <p style={{ textAlign: 'center' }}>{message}</p>
-      {showForm ? (
-        <form method="post" action={formData.url} style={{ textAlign: 'center' }}>
-        <input type="hidden" name="token_ws" value={formData.token} />
-        <input type="submit" value="Ir a pagar" />
-      </form>
-      ) : null}
     </div>
   );
 };

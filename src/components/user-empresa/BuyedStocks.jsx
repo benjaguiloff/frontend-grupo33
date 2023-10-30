@@ -4,12 +4,14 @@ Se hace fetch a la API de las acciones compradas y solicitudes pendientes.
 GET api/user/:id/stocks. 
 */
 import { useAuth0 } from '@auth0/auth0-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,  } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 const BuyedStocks = () => {
+  const navigate = useNavigate();
   const [stocks, setStocks] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0(); // Agregamos isLoading
@@ -53,12 +55,20 @@ const BuyedStocks = () => {
     padding: 0,
   };
 
+  const goBackToProfile = () => {
+    navigate('/');
+  }
+
+
   if (isLoading) {
     return <p>Cargando...</p>; // Muestra un mensaje de carga mientras Auth0 verifica la autenticación
   }
 
   return (
     <div style={containerStyle}>
+      <button onClick={goBackToProfile}>
+        Volver
+      </button>
       {isAuthenticated ? (
         loading ? (
           <p>Cargando existencias...</p>

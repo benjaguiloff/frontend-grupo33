@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'; // Importa useEffect y useSt
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import AddMoneyButton from './AddMoneyButton';
+import { useNavigate } from 'react-router-dom';
 
 
 // GET BACKEND_URL
@@ -11,6 +12,7 @@ const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 
 const Wallet = () => {
+  const navigate = useNavigate(); // Usa el hook
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [walletAmount, setWalletAmount] = useState(0); // Crea un estado para almacenar el monto de la billetera
 
@@ -35,14 +37,22 @@ const Wallet = () => {
     setWalletAmount(walletAmount + amount);
   };
 
+  const goBackToProfile = () => {
+    navigate('/');
+  }
   return (
     isAuthenticated && (
-      <div className="profile">
-        <div className="card">
-          <h2 className="saldo">Wallet</h2>
-          <h2 className="saldo">{`$${walletAmount}`}</h2>{' '}
-          {/* Muestra el monto de la billetera */}
-          <AddMoneyButton updateWallet={updateWallet} />
+      <div>
+        <button onClick={goBackToProfile}>
+        Volver
+      </button>
+        <div className="profile">
+          <div className="card">
+            <h2 className="saldo">Wallet</h2>
+            <h2 className="saldo">{`$${walletAmount}`}</h2>{' '}
+            {/* Muestra el monto de la billetera */}
+            <AddMoneyButton updateWallet={updateWallet} />
+          </div>
         </div>
       </div>
     )
