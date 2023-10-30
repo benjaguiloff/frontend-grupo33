@@ -18,12 +18,24 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
   const [message, setMessage] = useState('');
   const [currentCompany, setCurrentCompany] = useState(null);
   const [quantity, setQuantity] = useState(1); // Nuevo estado para la cantidad
+  const [showForm, setShowForm] = useState(false); // Nuevo estado para mostrar el formulario
+  const [isIntervalRunning, setIsIntervalRunning] = useState(false);
+  const [formData, setFormData] = useState({
+    url: '',
+    token: '',
+  });
+
 
   useEffect(() => {
     if (companieArray.length > 0) {
       setCurrentCompany(companieArray[0]);
     }
   }, [companieArray]);
+
+  const handleClick = () => {
+    startInterval();
+    buyStock();
+  };
 
   const buyStock = async () => {
     try {
@@ -63,6 +75,28 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
     };
     GetStocks();
   }, [id, page, size]);
+
+  const startInterval = () => {
+    setIsIntervalRunning(true);
+  };
+
+  useEffect(() => {
+    if (isIntervalRunning) {
+    const FetchWebPay = async () => {
+      try {
+        const response = await axios.get(`${backendURL}/purchases/webpay`);
+        console.log(response.data);
+        setShowForm(true);
+        setFormData(response.data);
+      }
+      catch (error) {
+        console.log(error);
+      }
+    }; const interval = setInterval(FetchWebPay, 5000); // Poll every 5 seconds
+    
+    return () => clearInterval(interval);
+    }
+  }, []);
 
   const [currentPage, setCurrentPage] = useState(1); // Nueva variable de estado para la página actual
 
@@ -116,10 +150,16 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
       <button onClick={nextPage} disabled={currentPage === totalPages}>
         Siguiente
       </button>
-      <button onClick={buyStock} style={{ width: '100%' }}>
-        COMPRAR
+      <button onClick={handleClick} style={{ width: '100%' }}>
+        COMPRAR 
       </button>
       <p style={{ textAlign: 'center' }}>{message}</p>
+      {showForm ? (
+        <form method="post" action={formData.url} style={{ textAlign: 'center' }}>
+        <input type="hidden" name="token_ws" value={formData.token} />
+        <input type="submit" value="Ir a pagar" />
+      </form>
+      ) : null}
     </div>
   );
 };
