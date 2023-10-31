@@ -30,13 +30,16 @@ const Profile = () => {
           <p className="contact">{user.email}</p>
           <LogoutButton />
           <div>
-            <Link to="/stocks">Acciones Compradas</Link>
+            <Link to="/stocks" className='custom-link'>Acciones Compradas</Link>
           </div>
           <div className='link'>
-            <Link to="/wallet">Billetera Virtual</Link>
+            <Link to="/wallet" className='custom-link'>Billetera Virtual</Link>
           </div>
           <div className='link'>
-            <Link to="/companies">Empresas Disponibles</Link>
+            <Link to="/companies" className='custom-link'>Empresas Disponibles</Link>
+          </div>
+          <div className='link'>
+            <Link to="/" className='custom-link'>Predicciones solicitadas</Link>
           </div>
         </div>
       </div>

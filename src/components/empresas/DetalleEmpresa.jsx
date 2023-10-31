@@ -20,8 +20,13 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
   const size = searchParams.get('size') || 5;
 
   const [message, setMessage] = useState('');
+  const [predictionMessage, setPredictionMessage] = useState('');
   const [currentCompany, setCurrentCompany] = useState(null);
   const [quantity, setQuantity] = useState(1); // Nuevo estado para la cantidad
+  const [savingTime, setSavingTime] = useState(1); // Nuevo estado para el tiempo de ahorro
+  const [predictionSuccess, setPredictionSuccess] = useState(false);
+  const [predictionId, setPredictionId] = useState('');
+
 
   const [buyStocks, setBuyStocks] = useState(true);
   const [isIntervalRunning, setIsIntervalRunning] = useState(false);
@@ -36,6 +41,7 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
   const handleClick = () => {
     buyStock();
   };
+
   const buyStock = async () => {
     if (!buyStocks) {
       return
@@ -124,6 +130,33 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
     navigate('/companies');
   }
 
+  const requestPrediction = async () => {
+    try {
+      const accessToken = await getAccessTokenSilently();
+      const headers = { Authorization: `Bearer ${accessToken}` };
+      const predictionURL = `${backendURL}/predictions/create`; // Asume que tienes un endpoint de predicción
+      const response = await axios.post(
+        predictionURL,
+        {
+          userId: user.sub,
+          symbol: id,
+          amount: quantity,
+          time_period: savingTime, // Usando el tiempo de ahorro
+        },
+        { headers }
+      );
+      // Maneja la respuesta aquí
+      console.log(response);
+      setPredictionMessage('Predicción solicitada correctamente.')
+      setPredictionSuccess(true);
+      setPredictionId(response.data.job_id);
+    } catch (error) {
+      console.error('Error al solicitar la predicción:', error);
+      setPredictionMessage('Error al solicitar la predicción:', error);
+    }
+  };
+  
+
   return (
     <div>
       <button onClick={goBackToCOmpanies}>
@@ -161,7 +194,34 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
         COMPRAR 
       </button>
       <p style={{ textAlign: 'center' }}>{message}</p>
+
+    
+      <div className="bordered-section">
+        <h2>PREDICCIÓN</h2>
+        <label htmlFor="quantity">¿Cuántos stocks comprarías?</label>
+        <input 
+          type="number" 
+          id="quantity" 
+          value={quantity} 
+          onChange={e => setQuantity(e.target.value)} 
+          min="1"
+        />
+        <label htmlFor="savingTime">¿Por cuantos días los ahorrarías?</label>
+        <input 
+          type="number" 
+          id="savingTime" 
+          value={savingTime} 
+          onChange={e => setSavingTime(e.target.value)} 
+          min="1"
+        />
+        <button onClick={requestPrediction} style={{ width: '100%' }}>
+          SOLICITAR PREDICCIÓN
+        </button>
+        <p style={{ textAlign: 'center' }}>{predictionMessage}</p>
+        {predictionSuccess && <button onClick={() => navigate(`/detallePrediccion/${predictionId}/${currentCompany.shortName}/${quantity}/${savingTime}`)}>Ver Detalle de la Predicción</button>}
+      </div>
     </div>
+    
   );
 };
 
