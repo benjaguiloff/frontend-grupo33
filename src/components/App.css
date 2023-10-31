@@ -211,3 +211,25 @@ button:hover, .profile .card button:hover {
   background-color: var(--accent-color);
   color: var(--background-color);
 }
+
+.bordered-section {
+  border: 1px solid black;
+  text-align: center;
+  margin: 20px;
+}
+
+.bordered-section1 {
+  border: 1px solid black;
+  text-align: center;
+  margin: 20px;
+  background-color: #8cda80;
+}
+
+.custom-link {
+  color: var(--primary-color);
+}
+
+.custom-link:active {
+  color: var(--accent-color);
+}
+
