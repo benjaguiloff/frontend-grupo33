@@ -218,7 +218,7 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
           SOLICITAR PREDICCIÓN
         </button>
         <p style={{ textAlign: 'center' }}>{predictionMessage}</p>
-        {predictionSuccess && <button onClick={() => navigate(`/detallePrediccion/${predictionId}/${currentCompany.shortName}/${quantity}/${savingTime}`)}>Ver Detalle de la Predicción</button>}
+        {predictionSuccess && <button onClick={() => navigate(`/detallePrediccion/${predictionId}/${currentCompany.shortName}`)}>Ver Detalle de la Predicción</button>}
       </div>
     </div>
     

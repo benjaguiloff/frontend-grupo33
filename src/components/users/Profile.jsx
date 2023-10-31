@@ -39,7 +39,7 @@ const Profile = () => {
             <Link to="/companies" className='custom-link'>Empresas Disponibles</Link>
           </div>
           <div className='link'>
-            <Link to="/" className='custom-link'>Predicciones solicitadas</Link>
+            <Link to="/predictions" className='custom-link'>Predicciones solicitadas</Link>
           </div>
         </div>
       </div>
