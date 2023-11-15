@@ -5,6 +5,11 @@ import { Link } from 'react-router-dom';
 
 const Profile = () => {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  let roles;
+  if (user) {
+    roles = user['https://arquisis-ifgg.me/roles'] || {roles: 'user'};
+  }
+  
   // Verificar si el usuario está autenticado
   if (isAuthenticated) {
     // Obtener el token de acceso de forma silenciosa
@@ -27,7 +32,7 @@ const Profile = () => {
           )}
           <h3 className="username">{user.name}</h3>
           <p className="title">@{user.nickname}</p>
-          <p className="contact">{user.email}</p>
+          <p>{roles[0] === 'admin' ? 'Admin' : 'User'}</p>
           <LogoutButton />
           <div>
             <Link to="/stocks" className='custom-link'>Acciones Compradas</Link>

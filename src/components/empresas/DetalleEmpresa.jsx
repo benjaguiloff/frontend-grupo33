@@ -13,6 +13,10 @@ let cancel;
 const DetalleEmpresa = ({ itemsPerPage }) => {
   const navigate = useNavigate(); // 
   const { user, getAccessTokenSilently } = useAuth0();
+  let roles;
+  if (user) {
+    roles = user['https://arquisis-ifgg.me/roles'] || {roles: 'user'};
+  }
   const [companieArray, setCompanieArray] = useState([]);
   const [searchParams] = useSearchParams();
   const { id } = useParams();
@@ -39,7 +43,11 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
   }, [companieArray]);
 
   const handleClick = () => {
+    if (roles[0] === 'admin') {
     buyStock();
+    } else {
+      setMessage('No tienes permisos para comprar acciones.');
+    }
   };
 
   const buyStock = async () => {
