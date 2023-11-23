@@ -9,7 +9,7 @@ let cancel;
 function WebPayRedirect() {
 
   const [confirmed, setConfirmed] = useState(false);
-  const [response_code, setResponded] = useState(-1);
+  const [response_code, setResponded] = useState(-2); // -2: no ha respondido, 0: confirmado, 1: anulado
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   var token_ws = "";
@@ -37,17 +37,23 @@ useEffect(() => {
                         // Set a reference to the cancel function
                         cancel = c;})
                 });
-                console.log(response.data);
-                console.log(response_code);
+                console.log("Response", response.data);
                 setResponded(response.data.response_code);
-                console.log(response_code);
             }
             catch (error) {
                 token_ws = "";
             }
         }
     };
-    FetchWebPay();    
+    FetchWebPay();  
+    
+    const timer = setTimeout(() => {
+      if (response_code === -2) {
+        setResponded(-1);
+      }
+    }, 5000);
+
+    return () => clearTimeout(timer);
     }, []);
 
 
@@ -73,7 +79,13 @@ useEffect(() => {
         Volver
         </button>
       <div style={{margin: 30, alignItems: 'center', justifyContent: 'center', display: 'flex', flexDirection: 'row'}}>
-        Tu compra ha sido {response_code == 0 ? "confirmada" : "anulada"}.
+        {response_code === -2 ? (
+          <span>Cargando...</span> // Mensaje de carga
+        ) : (
+          <span>
+            Tu compra ha sido {response_code === 0 ? "confirmada" : "rechazada"}.
+          </span>
+        )}
       </div>
     </div>
   );
