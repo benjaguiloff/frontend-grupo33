@@ -9,13 +9,17 @@ const LoginButton = () => {
   const { loginWithRedirect, isAuthenticated, user, getAccessTokenSilently } =
     useAuth0();
   const [userIdSent, setUserIdSent] = useState(false);
+  let roles;
+  if (user) {
+    roles = user['https://arquisis-ifgg.me/roles']; // Si no es admin, devuelve un arreglo vacío
+  }
 
   useEffect(() => {
     if (isAuthenticated && user && !userIdSent) {
       // Obtener el token de acceso de forma silenciosa
       getAccessTokenSilently()
         .then((token) => {
-          const userObj = { userId: user.sub };
+          const userObj = { userId: user.sub, roles: roles};
           axios
             .post(loginURL, userObj, {
               headers: {

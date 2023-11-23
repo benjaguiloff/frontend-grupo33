@@ -7,7 +7,8 @@ const Profile = () => {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   let roles;
   if (user) {
-    roles = user['https://arquisis-ifgg.me/roles'] || {roles: 'user'};
+    roles = user['https://arquisis-ifgg.me/roles']; // Si no es admin, devuelve un arreglo vacío
+    console.log(roles);
   }
   
   // Verificar si el usuario está autenticado
@@ -34,6 +35,9 @@ const Profile = () => {
           <p className="title">@{user.nickname}</p>
           <p>{roles[0] === 'admin' ? 'Admin' : 'User'}</p>
           <LogoutButton />
+          <div className='link'>
+            <Link to="/buy_stocks" className='custom-link'>Acciones Disponibles</Link>
+          </div>
           <div>
             <Link to="/stocks" className='custom-link'>Acciones Compradas</Link>
           </div>

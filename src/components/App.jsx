@@ -14,7 +14,7 @@ function App() {
         <h1>¡Stocks!</h1>
         <Profile />
         <LoginButton />
-        <BilleteraVirtual />
+        {/* <BilleteraVirtual /> */}
       </div>
     </div>
   );

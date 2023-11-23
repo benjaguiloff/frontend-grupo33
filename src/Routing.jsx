@@ -12,6 +12,7 @@ import ConfirmPurchase from './components/compras/ConfirmarCompra.jsx';
 import WebPayRedirect from './components/compras/CompraEnProceso.jsx';
 import DetallePrediccion from './components/empresas/DetallePrediccion.jsx';
 import PredictionsList from './components/empresas/ListaPredicciones.jsx';
+import ListaStocks from './components/user-empresa/ListaStocks.jsx';
 
 // Configurar el enrutamiento de la aplicación
 function Routing() {
@@ -31,6 +32,7 @@ function Routing() {
             <Route path='/compracompletada' element={<CompraCompletada/>} />
             <Route path="/detallePrediccion/:predictionId/:companyShortName" element={<DetallePrediccion />} />
             <Route path="/predictions" element={<PredictionsList />} />
+            <Route path="/buy_stocks" element={<ListaStocks />} />
 
           </Routes>
         </Layout>
