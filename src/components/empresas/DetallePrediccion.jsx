@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
@@ -8,7 +8,7 @@ const backendURL = process.env.REACT_APP_BACKEND_URL;
 const DetallePrediccion = () => {
   const navigate = useNavigate();
   const { predictionId, companyShortName} = useParams();
-  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [loading, setLoading] = useState(true);
   const [predictionResult, setPredictionResult] = useState(1);
 

@@ -3,6 +3,8 @@ import { CompraContext } from './CompraContext';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 
+// NO SE ESTA USANDO ESTE COMPONENTE
+
 function CompraCompletada() {
   const { compra } = useContext(CompraContext);
   const [linkBoleta, setLinkBoleta] = useState(null);

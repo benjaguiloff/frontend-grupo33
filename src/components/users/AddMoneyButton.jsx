@@ -7,17 +7,17 @@ import { useAuth0 } from '@auth0/auth0-react';
 const ADD_MONEY_URL = `${process.env.REACT_APP_BACKEND_URL}/wallets`;
 
 const AddMoneyButton = ({ updateWallet }) => {
-  const { user, getAccessTokenSilently } = useAuth0();
+  const { user } = useAuth0();
   const [addAmount, setAddAmount] = useState(0);
   const [message, setMessage] = useState('');
 
   const addMoney = async () => {
     try {
-      const accessToken = await getAccessTokenSilently();
       const response = await axios.post(ADD_MONEY_URL, {
         userId: user.sub,
         money: addAmount,
       });
+      console.log('response', response);
       updateWallet(addAmount);
       setMessage('¡Dinero agregado!');
     } catch (error) {

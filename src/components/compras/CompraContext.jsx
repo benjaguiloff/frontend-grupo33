@@ -1,5 +1,7 @@
 import React, { createContext, useState } from 'react';
 
+// NO SE ESTA USANDO ESTE COMPONENTE
+
 const CompraContext = createContext(null);
 
 const CompraProvider = ({ children }) => {

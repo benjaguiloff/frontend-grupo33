@@ -18,7 +18,7 @@ let cancel;
 
 const CompaniesList = () => {
   const navigate = useNavigate(); // Usa el hook
-  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
 

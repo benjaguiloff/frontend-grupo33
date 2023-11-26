@@ -1,9 +1,9 @@
 
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { CompraContext } from '../compras/CompraContext';
+
 
 const backendURL = process.env.REACT_APP_BACKEND_URL;
 const purchaseURL = `${backendURL}/purchases`;
@@ -68,6 +68,7 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
         },
         { headers }
       );
+      console.log(response);
       const data = {
         nombreStock: currentCompany ? currentCompany.shortName : '',
         symbol: id,
@@ -77,7 +78,7 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
       navigate('/confirmarcompra?data=' + JSON.stringify(data));
     } catch (error) {
       console.error('Error al intentar comprar:', error);
-      if (error.request.response.message == "No se cuenta con el dinero suficiente para comprar esta acción") {
+      if (error.request.response.message === "No se cuenta con el dinero suficiente para comprar esta acción") {
         setMessage('No se cuenta con el dinero suficiente para comprar esta acción');
       } else {
         setMessage('Error al intentar comprar.');
@@ -86,7 +87,7 @@ const DetalleEmpresa = ({ itemsPerPage }) => {
   };
 
   useEffect(() => {
-    if (companieArray.length ==  0) {
+    if (companieArray.length ===  0) {
     const GetStocks = async () => {
       const url = `${backendURL}/stocks/${id}/?size=${500}`;
       try {

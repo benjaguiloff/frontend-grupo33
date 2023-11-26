@@ -46,10 +46,6 @@ const ListaStocks = () => {
     border: '1px solid #ccc',
   };
 
-  const listStyle = {
-    listStyleType: 'none',
-    padding: 0,
-  };
 
   const handleStockClick = (id) => { // Función para manejar el clic
     navigate('/');

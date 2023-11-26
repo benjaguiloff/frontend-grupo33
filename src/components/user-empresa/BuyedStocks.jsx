@@ -50,10 +50,6 @@ const BuyedStocks = () => {
     border: '1px solid #ccc',
   };
 
-  const listStyle = {
-    listStyleType: 'none',
-    padding: 0,
-  };
 
   const goBackToProfile = () => {
     navigate('/');

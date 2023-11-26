@@ -3,7 +3,7 @@ import './App.css';
 import axios from 'axios';
 import LoginButton from './users/LoginButton';
 import Profile from './users/Profile';
-import BilleteraVirtual from './users/BilleteraVirtual';
+
 
 axios.defaults.withCredentials = false;
 
@@ -14,7 +14,6 @@ function App() {
         <h1>¡Stocks!</h1>
         <Profile />
         <LoginButton />
-        {/* <BilleteraVirtual /> */}
       </div>
     </div>
   );

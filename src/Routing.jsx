@@ -1,8 +1,6 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import About from './common/About.jsx';
 import App from './components/App';
-import Layout from './common/Layout';
 import BuyedStocks from './components/user-empresa/BuyedStocks.jsx';
 import Wallet from './components/users/BilleteraVirtual.jsx';
 import CompaniesList from './components/empresas/ListaEmpresas.jsx';
@@ -19,10 +17,8 @@ function Routing() {
   return (
     <>
       <Router>
-        <Layout>
           <Routes>
             <Route path="/" element={<App />} />
-            <Route path="/about" element={<About />} />
             <Route path="/stocks" element={<BuyedStocks />} />
             <Route path="/wallet" element={<Wallet />} />
             <Route path="/companies" element={<CompaniesList />} />
@@ -33,9 +29,7 @@ function Routing() {
             <Route path="/detallePrediccion/:predictionId/:companyShortName" element={<DetallePrediccion />} />
             <Route path="/predictions" element={<PredictionsList />} />
             <Route path="/buy_stocks" element={<ListaStocks />} />
-
           </Routes>
-        </Layout>
       </Router>
     </>
   );
