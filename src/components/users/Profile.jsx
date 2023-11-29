@@ -41,6 +41,12 @@ const Profile = () => {
           <div>
             <Link to="/stocks" className='custom-link'>Acciones Compradas</Link>
           </div>
+          <div>
+            <Link to="/received_proposals" className='custom-link'>Propuestas Recibidas</Link>
+          </div>
+          <div>
+            <Link to="/auctions" className='custom-link'>Subastas</Link>
+          </div>
           <div className='link'>
             <Link to="/wallet" className='custom-link'>Billetera Virtual</Link>
           </div>

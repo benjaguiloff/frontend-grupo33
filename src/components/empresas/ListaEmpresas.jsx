@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';  // Importa useNavigate
+import './ListaEmpresas.css';
 
 const backendURL = process.env.REACT_APP_BACKEND_URL;
 const CancelToken = axios.CancelToken;
@@ -72,7 +73,7 @@ const CompaniesList = () => {
           <div 
             key={index}
             style={{ width: "70%", textAlign: "center" }} 
-            className="card"
+            className="cardCompany"
             onClick={() => handleCompanyClick(company.symbol)}  // Añade el manejador del clic aquí
           >
             {company.symbol}: {company.shortName}

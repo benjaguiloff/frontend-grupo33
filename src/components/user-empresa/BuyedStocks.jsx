@@ -25,7 +25,7 @@ const BuyedStocks = () => {
     });
   }
 
-  let purchaseURL = `${backendURL}/purchases/${userId}`;
+  let purchaseURL = `${backendURL}/purchases/user/${userId}`;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,11 +70,11 @@ const BuyedStocks = () => {
           <p>Cargando existencias...</p>
         ) : (
           <div>
-            <h2>Acciones Compradas</h2>
+            <h2 style={{ textAlign: 'center' }}>Acciones Compradas</h2>
               {Array.isArray(stocks) && stocks.length > 0 ? (
-                stocks.map((stock) => <h4 key={stock.id}>{stock.amount} acciones de {stock.shortName} ({stock.symbol}) - Estado: {stock.status}</h4>)
+                stocks.map((stock) => <h4 style={containerStyle} key={stock.id}>{stock.amount} acciones de {stock.shortName} ({stock.symbol})</h4>)
               ) : (
-                <p>No tienes acciones compradas en este momento.</p>
+                <p style={{ textAlign: 'center' }}>No tienes acciones compradas en este momento.</p>
               )}
           </div>
         )

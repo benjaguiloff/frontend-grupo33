@@ -5,13 +5,20 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const backendURL = process.env.REACT_APP_BACKEND_URL;
+const purchaseURL = `${backendURL}/purchases/admin`;
 
 const ListaStocks = () => {
   const navigate = useNavigate();
   const [stocks, setStocks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
+  const [message, setMessage] = useState('');
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0(); // Agregamos isLoading
   const userId = user?.sub; // Usamos user?.sub para obtener el ID de usuario
+  let roles;
+  if (user) {
+    roles = user['https://arquisis-ifgg.me/roles'] || {roles: 'user'};
+  }
 
   if (isAuthenticated) {
     // Obtener el token de acceso de forma silenciosa
@@ -21,8 +28,6 @@ const ListaStocks = () => {
     });
   }
 
-  let purchaseURL = `${backendURL}/purchases/admin`;
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,6 +35,8 @@ const ListaStocks = () => {
           const response = await axios.get(purchaseURL);
           setStocks(response.data);
           setLoading(false);
+          console.log("response", response);
+          console.log("stocks", stocks);
         }
       } catch (error) {
         console.error('Error al obtener las existencias:', error);
@@ -47,9 +54,64 @@ const ListaStocks = () => {
   };
 
 
-  const handleStockClick = (id) => { // Función para manejar el clic
-    navigate('/');
+  const handleBuyClick = async (stock) => { 
+    if (quantity > stock.amount) {
+      setMessage('No se cuenta con la cantidad de stocks que quieres comprar.');
+      return
+    }
+
+    try {
+      const accessToken = await getAccessTokenSilently();
+      const headers = { Authorization: `Bearer ${accessToken}` };
+      const response = await axios.post(
+        `${backendURL}/purchases`,
+        {
+          symbol: stock.symbol,
+          amount: quantity,
+          userId: userId,
+        },
+        { headers }
+      );
+      console.log(response);
+      setMessage('Compra realizada con exito');
+    } catch (error) {
+      console.error('Error al intentar comprar:', error);
+      setMessage('Error al intentar comprar.');
+    }
   };
+
+  const handleAuctionClick = (stock) => { 
+    if (roles[0] === 'admin') {
+      AuctionStock(stock);
+    } else {
+      setMessage('No tienes permisos para subastar acciones.');
+    }
+  };
+
+  const AuctionStock = async (stock) => {
+    if (quantity > stock.amount) {
+      setMessage('No se cuenta con la cantidad suficiente para subastar.');
+      return
+    }
+
+    try {
+      const accessToken = await getAccessTokenSilently();
+      const headers = { Authorization: `Bearer ${accessToken}` };
+      const response = await axios.post(
+        `${backendURL}/auctions/offer`,
+        {
+          symbol: stock.symbol,
+          quantity: quantity, // Usando la cantidad seleccionada
+        },
+        { headers }
+      );
+      console.log(response);
+      setMessage('Subasta realizada con éxito.');
+    } catch (error) {
+      console.error('Error al intentar subastar:', error);
+      setMessage('Error al intentar subastar.');
+    }
+  }
 
   const goBackToProfile = () => {
     navigate('/');
@@ -61,7 +123,7 @@ const ListaStocks = () => {
   }
 
   return (
-    <div style={containerStyle}>
+    <div>
       <button onClick={goBackToProfile}>
         Volver
       </button>
@@ -70,21 +132,42 @@ const ListaStocks = () => {
           <p>Cargando stocks disponibles...</p>
         ) : (
           <div>
-            <h2>Acciones Disponibles</h2>
+            <h2 style={{ textAlign: 'center' }}>Acciones Disponibles</h2>
+            <p style={{ textAlign: 'center' }}>{message}</p>
               {Array.isArray(stocks) && stocks.length > 0 ? (
                 stocks.map((stock) => (
-                    // <h4 key={stock.id}>{stock.amount} acciones de {stock.shortName} ({stock.symbol}) - Estado: {stock.status}</h4>
-                    <div 
-                        key={stock.id}
-                        style={{ width: "70%", textAlign: "center" }} 
-                        className="card"
-                        onClick={() => handleStockClick(stock.symbol)}  // Añade el manejador del clic aquí
-                    >
-                        {stock.shortName} ({stock.symbol}) - {stock.amount} acciones
+                    <div style={containerStyle}>
+                      <div 
+                          key={stock.id}
+                          style={{ width: "70%", textAlign: "center" }} 
+                          className="card"
+                      >
+                          {stock.shortName} ({stock.symbol}) - {stock.amount} acciones
+                      </div>
+
+                      <div style={{ textAlign: 'center', margin: '20px' }}>
+                        <label htmlFor="quantity">Cantidad a comprar: </label>
+                        <input 
+                          type="number" 
+                          id="quantity" 
+                          value={quantity} 
+                          onChange={e => setQuantity(e.target.value)} 
+                          min="1"
+                          max={stock.amount}
+                        />
+                      </div>
+
+                      <button onClick={() => handleBuyClick(stock)} style={{ width: '100%' }}>
+                        COMPRAR 
+                      </button>
+                      <button onClick={() => handleAuctionClick(stock)} style={{ width: '100%' }}>
+                        SUBASTAR 
+                      </button>
+                      
                     </div>
                 ))
               ) : (
-                <p>No hay acciones disponibles aun.</p>
+                <p style={{ textAlign: 'center' }}>No hay acciones disponibles aun.</p>
               )}
           </div>
         )

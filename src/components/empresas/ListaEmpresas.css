@@ -1,0 +1,16 @@
+.cardCompany {
+    flex-basis: 45%;
+    flex: 1;
+    width: 45%;
+    margin: 10px;
+    padding: 10px;
+    background-color: #f2d3ab;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+  }
+
+  .cardCompany:hover {
+    background-color: #fbf5ef;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
